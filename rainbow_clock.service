@@ -1,0 +1,48 @@
+[Unit]
+# Human readable name of the unit
+Description=Rainbow Clock
+
+[Service]
+# Command to execute when the service is started
+ExecStart=/usr/bin/python3 /home/pi/rainbow_clock/clock.py
+
+# Disable Python's buffering of STDOUT and STDERR, so that output from the
+# service shows up immediately in systemd's logs
+Environment=PYTHONUNBUFFERED=1
+
+# Automatically restart the service if it crashes
+Restart=always
+RestartSec=5
+
+# Our service will notify systemd once it is up and running
+Type=simple
+
+# Use SIGINT to stop the service
+KillSignal=SIGINT
+
+# Use `pi` to run our service
+User=pi
+
+[Install]
+# Tell systemd to automatically start this service when the system boots
+# (assuming the service is enabled)
+WantedBy=default.target
+
+
+# Install:
+# ln -sf ~/rainbow_clock/rainbow_clock.service ~/.config/systemd/user/
+# systemctl --user list-unit-files 
+# systemctl --user daemon-reload
+# systemctl --user start rainbow_clock.service
+# systemctl --user status rainbow_clock.service
+# systemctl --user stop rainbow_clock.service
+#
+# sudo ln -sf /home/pi/rainbow_clock/rainbow_clock.service /etc/systemd/system/rainbow_clock.service
+# systemctl list-unit-files | grep rainbow
+# sudo systemctl daemon-reload
+# sudo systemctl start rainbow_clock
+# sudo systemctl stop rainbow_clock
+# sudo systemctl enable rainbow_clock
+# systemctl status rainbow_clock
+#
+# journalctl --unit rainbow_clock
